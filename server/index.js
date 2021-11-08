@@ -1,5 +1,4 @@
 var express = require('express')
-const https = require('https')
 const fs = require('fs')
 const bodyParser = require('body-parser')
 const multer = require('multer') // v1.0.5
@@ -11,20 +10,12 @@ app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded())
 
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'https://matic.supply');
+    res.setHeader('Access-Control-Allow-Origin', 'https://matic-faucet.herokuapp.com/');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-
-https.createServer({
-    key: fs.readFileSync('privkey.pem'),
-    cert: fs.readFileSync('cert.pem'),
-    ca: fs.readFileSync('chain.pem')
-}, app).listen(3000, () => {
-    console.log('Listening...')
-})
 
 const axios = require("axios")
 
@@ -373,3 +364,7 @@ async function transferEth(_to, _amount, network) {
     console.log('---end tx---')
     return Promise.resolve(r.transactionHash);
 }
+
+app.listen(process.env.PORT, () => {
+    console.log('Listening...')
+})
