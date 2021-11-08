@@ -2,8 +2,7 @@ import axios from "axios";
 import config from "react-global-configuration";
 
 async function claimFaucet(account, captcha){
-    console.log(captcha)
-    let apiUrl = config.get("apiurl") +"/rpc-mainnet/matic/" + account + "/" + captcha;
+    let apiUrl = config.get("apiurl") +"/rpc-mainnet/matic/" + account;
     console.log("Sending request...")
     return await axios
     .get(apiUrl)
