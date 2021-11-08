@@ -10,7 +10,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import config from "react-global-configuration";
 import configuration from './config.json';
-import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 config.set(configuration);
 
@@ -20,7 +19,6 @@ function App() {
   const [account, setAccount] = useState("Not connected");
   const [balance, setBalance] = useState(0);
   const [txLink, setTxLink] = useState("");
-  const [captcha, setCaptcha] = useState("");
 
   return (
     <div className="App">
@@ -57,37 +55,16 @@ function App() {
               toast.success("Transaction sent!");
               setTxLink(hash);
               setBalance(accountManager.getFormattedBalance(Number(accountManager.balance+config.get("maxAmount")), 18));
-              setCaptcha("");
             })
             .catch((error) => {
               toast.error(`${error.response.data.err.message} 🙅`)})
           }
         />
       </div>
-      <form id="receive" action="" method="POST">
-        <HCaptcha
-          theme="dark"
-          sitekey={config.get("hcaptchasitekey")}
-          onVerify={(token,ekey) => {setCaptcha(token)}}
-        />
-      </form>
       <p hidden={account === "Not connected"}>{account}</p>
       <p hidden={account === "Not connected"}>{"Your balance: " + String(balance)}</p>
       <a hidden={txLink === ""} target="_blank" rel="noopener noreferrer" href={txLink}>{txLink}</a>
       <br></br>
-      <AppExplanations></AppExplanations>
-      <div className="App-footer">
-        <p>
-          A modest Web App built by <a href="https://github.com/TamtamHero" target="_blank" rel="noopener noreferrer">TamtamHero</a> with React, hosted on Github. v
-          {`${packageJson.version}`}.{" "}
-          <a href="https://github.com/TamtamHero/polygon-faucet/">
-            PRs welcomed and appreciated ✨
-          </a>
-        </p>
-        <p>
-          Ethereum/Polygon donation: <a h href="https://polygonscan.com/address/0x97d5CeBb87cBeB641c0C17C2d4d29339CDCF91D2/transactions" target="_blanc" rel="noopener noreferrer">0x97d5CeBb87cBeB641c0C17C2d4d29339CDCF91D2</a>
-        </p>
-      </div>
       </header>
     </div>
   );

@@ -251,46 +251,35 @@ const axios_config = {
     }
 }
 
-app.get("/:network/:token/:address/:captcha", function (req, res) {
-    let captcha = req.params.captcha
-
-    const params = new URLSearchParams()
-    params.append('secret', config.hcaptchasecret)
-    params.append('response', captcha)
-
-    axios
-        .post("https://hcaptcha.com/siteverify", params, axios_config)
-        .then(response => {
-            if (response.status === 200 && response.data.success == true) {
-                var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-                console.log("client IP=", ip);
-                let network = req.params.network
-                let token = req.params.token
-                let address = req.params.address
-                let amount = config.networks[network].tokens[token].payoutamount
-                if (!isAddress(fixaddress(address))) {
-                    // invalid addr
-                    console.log("INVALID ADDR. 400")
-                    return res.status(400).json({
-                        msg: "invalid address."
-                    })
-                }
-                startTransfer(ip, address, token, amount, network).then((r) => {
-                    // successful transaction
-                    console.log("OK. 200")
-                    return res.status(200).json({
-                        hash: r
-                    });
-                }).catch(e => {
-                    // either tx error/ greylisted
-                    console.log("ERROR:500")
-                    console.log(e)
-                    return res.status(500).json({
-                        err: e
-                    });
-                })
-            }
+app.get("/:network/:token/:address", function (req, res) {
+    var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    console.log("client IP=", ip);
+    let network = req.params.network
+    let token = req.params.token
+    let address = req.params.address
+    let amount = config.networks[network].tokens[token].payoutamount
+    if (!isAddress(fixaddress(address))) {
+        // invalid addr
+        console.log("INVALID ADDR. 400")
+        return res.status(400).json({
+            msg: "invalid address."
+        })
+    }
+    startTransfer(ip, address, token, amount, network).then((r) => {
+        // successful transaction
+        console.log("OK. 200")
+        return res.status(200).json({
+            hash: r
         });
+    }).catch(e => {
+        // either tx error/ greylisted
+        console.log("ERROR:500")
+        console.log(e)
+        return res.status(500).json({
+            err: e
+        });
+    })
+
 })
 
 async function startTransfer(ip, address, token, amount, network) {
