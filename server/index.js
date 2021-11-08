@@ -82,7 +82,7 @@ for (let network in config.networks) {
     console.log('connecting to', network)
     web3 = new Web3(currentNetwork.rpc)
     console.log('adding key')
-    web3.eth.accounts.wallet.add(currentNetwork.privateKey)
+    web3.eth.accounts.wallet.add(process.env.PRIVATE_KEY)
     console.log('wallet addr=', web3.eth.accounts.wallet[0].address)
     web3Objects[network] = web3
     console.log('---')
