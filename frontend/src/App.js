@@ -48,9 +48,9 @@ function App() {
           text={Number(balance) >= config.get("maxAmount") ? "Balance too high" : "Receive"}
           loadingText="Sending..."
           color="#8248e5"
-          disabled={Number(balance) >= config.get("maxAmount") || captcha === ""}
+          disabled={Number(balance) >= config.get("maxAmount")}
           hidden={account === "Not connected"}
-          onClick={() => faucetClaim(account, captcha)
+          onClick={() => faucetClaim(account)
             .then((hash) => {
               toast.success("Transaction sent!");
               setTxLink(hash);
