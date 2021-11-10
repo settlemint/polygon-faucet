@@ -11,7 +11,7 @@
       "privateKey": "YOUR_PRIVATE_KEY",
       "tokens": {
         "matic": {
-          "payoutamount": 0.0005,
+          "payoutamount": 0.005,
           "maxbalance": 1000000000000000
         }
       }
