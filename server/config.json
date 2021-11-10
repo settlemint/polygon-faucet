@@ -12,7 +12,7 @@
       "tokens": {
         "matic": {
           "payoutamount": 0.005,
-          "maxbalance": 1000000000000000
+          "maxbalance": 50000000000000000
         }
       }
     }
